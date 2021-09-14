@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Converts Gemini Capsule to a HTML Webpage
+# Converts Gemini Capsule folder to a HTML Website folder
 # 2021, by Antonio Prates <antonioprates@pm.me>
 
 # Note: this script assumes you have Sugar C  in yor system
@@ -39,10 +39,8 @@ echo "Convering Gemini Capsule from '$gmipath' to './website':"
 if [[ -d $website ]];
 then
     rm -r $website
-    cp -r $gmipath $website
-else
-    cp -r $gmipath $website
 fi
+cp -r $gmipath $website
 
 # copy/update favicon.ico and styles.css to root folder
 cp -uvx $PWD/template/favicon.ico $website

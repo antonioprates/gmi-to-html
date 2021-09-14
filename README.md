@@ -52,7 +52,7 @@ Alternatively, you can [get the latest binary](https://github.com/antonioprates/
 
 Then, get the bash scripts by cloning `this` repo, as explained in previous section.
 
-Copy the binary into `src` folder and update `gmi-to-html.sh` to use the binary instead:
+Copy the binary into `src` folder and update `capsule-to-website.sh` to use the binary instead:
 
 ```diff
 < sugar gmi-to-html.c $filePaths
@@ -103,12 +103,12 @@ The `HTML` files will be placed in the same path of the `GMI` input files (use w
 
 ### 2. Semi-automatic
 
-Optionally, you can use the `gmi-to-html.sh` to convert an entire `Gemini Capsule` folder in one go, also copying the `css stylesheet` and `favicon` from `template` folder in the right places for you.
+Optionally, you can use the `capsule-to-website.sh` to convert an entire `Gemini Capsule` folder in one go, also copying the `css stylesheet` and `favicon` from `template` folder in the right places for you.
 
 Recommended usage - provide path to `content folder` (without the final slash), like:
 
 ```sh
-./gmi-to-html.sh ~/gemini
+./capsule-to-website.sh ~/gemini
 ```
 
 Then, you get a pure `HTML` clone under `./website` folder.

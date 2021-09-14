@@ -20,7 +20,7 @@ website=$PWD/website
 && echo "./gmi-to-html.sh ~/gemini" && exit 1
 
 # clone convert capsule to website
-./gmi-to-html.sh $gmipath
+./capsule-to-website.sh $gmipath
 
 echo "Publishing GEMINI Capsule:"
 tar -czvf capsule.tar.gz -C $gmipath .
