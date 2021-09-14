@@ -1,5 +1,4 @@
-// gmi-to-html utility, using Sugar-C lib, in about 108 lines of code
-// see: gemini_spec.txt, section 1.3.5 for text/gemini format ref.
+// gmi-to-html utility, using Sugar-C in about 108 lines of code
 // 2021, by Antonio Prates <antonioprates@pm.me>
 
 #include <sugar.h>
@@ -61,15 +60,15 @@ string toHTML(string line) {
     line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
                             : replaceWord(line, "```", "</pre>");
   }
-  if (preformattedMode)                     // while global <pre> mode
-    return line;                            // -> pure simple text
-  if (startsWith(line, "=&gt;"))            // => link (already escaped)
-    return toLink(line);                    // -> <a href...
-  line = replaceWord(line, " `", " <i>");   // start italic text
-  line = replaceWord(line, "` ", "</i> ");  // end italic text
-  line = replaceWord(line, " **", " <b>");  // start bold text
-  line = replaceWord(line, "** ", "</b> "); // end bold text
-  if (startsWith(line, "* "))               // * -> list item
+  if (preformattedMode)                       // while global <pre> mode
+    return line;                              // -> pure simple text
+  if (startsWith(line, "=&gt;"))              // => link (already escaped)
+    return toLink(line);                      // -> <a href...
+  line = replaceWord(line, " `", " <code>");  // start inline code
+  line = replaceWord(line, "` ", "</code> "); // end inline code
+  line = replaceWord(line, " **", " <b>");    // start bold text
+  line = replaceWord(line, "** ", "</b> ");   // end bold text
+  if (startsWith(line, "* "))                 // * -> list item
     return join3s("<li>", &line[2], "</li>");
   if (startsWith(line, "### ")) // ### -> h3
     return join3s("<h3>", &line[4], "</h3>");

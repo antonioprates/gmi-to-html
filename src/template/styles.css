@@ -36,9 +36,20 @@ h3 {
 }
 
 pre {
+  padding: 1vw;
   color: #e5c07b;
   background-color: #161b22;
-  padding: 1vw;
+  border-radius: 6px;
+  font-family: monospace;
+}
+
+code {
+  padding: .2em .4em;
+  margin: 0;
+  font-size: 85%;
+  color: #e5c07b;
+  background-color: #161b22;
+  border-radius: 6px;
   font-family: monospace;
 }
 

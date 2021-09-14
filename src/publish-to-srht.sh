@@ -12,24 +12,22 @@ send_url="https://pages.sr.ht/publish/<USERNAME>.srht.site"
 ######################################################### END OF SOURCEHUT CONFIGS #
 
 # get path to content folder as first argument
-gmipath="$1"
-website="$PWD/website"
+gmipath=$1
+website=$PWD/website
 
 # prevent running the script with no defined path
-[[ -z "$gmipath" ]] && echo "Please, provide path to content folder (without final slash), like:" \
+[[ -z $gmipath ]] && echo "Please, provide path to content folder (without final slash), like:" \
 && echo "./gmi-to-html.sh ~/gemini" && exit 1
 
-# clone converting capsule to website
+# clone convert capsule to website
 ./gmi-to-html.sh $gmipath
 
-echo "Compressing files to send:"
-tar -czvf capsule.tar.gz -C $gmipath .
-tar -czvf website.tar.gz -C $website .
-
 echo "Publishing GEMINI Capsule:"
+tar -czvf capsule.tar.gz -C $gmipath .
 curl --oauth2-bearer $token -Fcontent=@capsule.tar.gz -Fprotocol=GEMINI $send_url
 
 echo "Publishing HTTP Website:"
+tar -czvf website.tar.gz -C $website .
 curl --oauth2-bearer $token -Fcontent=@website.tar.gz -Fprotocol=HTTPS $send_url
 
 echo "Cleaning up..."
