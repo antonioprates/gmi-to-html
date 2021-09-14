@@ -9,9 +9,6 @@ It's a combination of `bash/sugar-c` utilities to assist publishing to both worl
 
 At it's core, there's a very simple `text/gemini` to `text/html` conversion tool, written in just about 108 lines of code, using C scripting with [Sugar-C](https://github.com/antonioprates/sugar) (tcc flavour).
 
-Yet, you can also use a C compiler of your preference, as long as you include  [sugar.h](https://github.com/antonioprates/sugar/blob/master/src/include/sugar.h) file to this project, and compile the tool instead of running as a C script.
-
-
 See also:
 [solderpunk's gemini spec](./gemini_spec.txt), section 1.3.5 for `text/gemini` format reference.
 
@@ -25,9 +22,11 @@ See also:
 
 ## Install
 
+### With Sugar-C
+
 > `Sugar-C` compiles C code on the fly 'as if' a scripting language out of the box and leans on `<sugar.h>` library as single only import for doing text file operations.
 
-Recommended usage, install `Sugar-C` from [the GitHub repository](https://github.com/antonioprates/sugar), like:
+First install `Sugar-C` from [the GitHub repository](https://github.com/antonioprates/sugar), like:
 
 ```sh
 git clone https://github.com/antonioprates/sugar.git
@@ -37,13 +36,29 @@ cd sugar
 
 > Note: you might have to `sudo` the `install.sh` depending on your user permissions.
 
-Then, clone `this` repo:
+Then, just clone `this` repo:
 
 ```sh
 git clone https://github.com/antonioprates/gmi-to-html
 ```
 
 Now you should be good to go :)
+
+### Without Sugar-C
+
+Alternatively, you can [get the latest binary](https://github.com/antonioprates/gmi-to-html/releases).
+
+Then, get the bash scripts by cloning `this` repo, as explained in previous section.
+
+Copy the binary into `src` folder and update `gmi-to-html.sh` to use the binary instead:
+
+```diff
+< sugar gmi-to-html.c $filePaths
+---
+> gmi-to-html $filePaths
+```
+
+Yet, you can also use a C compiler of your preference, as long as you include  [sugar.h](https://github.com/antonioprates/sugar/blob/master/src/include/sugar.h) file to the project, and compile the tool yourself.
 
 ## Features
 
