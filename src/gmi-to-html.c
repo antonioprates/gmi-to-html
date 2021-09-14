@@ -61,13 +61,15 @@ string toHTML(string line) {
     line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
                             : replaceWord(line, "```", "</pre>");
   }
-  if (preformattedMode)                    // while global <pre> mode
-    return line;                           // -> pure simple text
-  if (startsWith(line, "=&gt;"))           // => link (already escaped)
-    return toLink(line);                   // -> <a href...
-  line = replaceWord(line, " `", " <b>");  // start bold text
-  line = replaceWord(line, "` ", "</b> "); // end bold text
-  if (startsWith(line, "* "))              // * -> list item
+  if (preformattedMode)                     // while global <pre> mode
+    return line;                            // -> pure simple text
+  if (startsWith(line, "=&gt;"))            // => link (already escaped)
+    return toLink(line);                    // -> <a href...
+  line = replaceWord(line, " `", " <i>");   // start italic text
+  line = replaceWord(line, "` ", "</i> ");  // end italic text
+  line = replaceWord(line, " **", " <b>");  // start bold text
+  line = replaceWord(line, "** ", "</b> "); // end bold text
+  if (startsWith(line, "* "))               // * -> list item
     return join3s("<li>", &line[2], "</li>");
   if (startsWith(line, "### ")) // ### -> h3
     return join3s("<h3>", &line[4], "</h3>");

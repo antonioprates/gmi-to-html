@@ -71,7 +71,8 @@ These are the markup conversions currently supported by `gmi-to-html.c` (the cor
 - `#` heading 1, also sets the page title
 - `##` heading 2
 - `###` heading 3
-- `bold` words enclosed in backtick (`)
+- `italic` words enclosed in backtick (`)
+- `bold` words enclosed in asterisks (**)
 - `"`, `&`, `<`, `>`, html escaped codes
 
 ## Conveniences
