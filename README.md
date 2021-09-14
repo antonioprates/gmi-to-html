@@ -5,7 +5,7 @@
 
 This is a framework to streamline the process of writing contents as a `Gemini Capsule`, while making it also available as a common website, for a broader audience.
 
-It's a combination of `bash/sugar-c` utilities to assist publishing to both worlds - `Gemini` and `WWW` - from the command line.
+It's a combination of `bash/sugar-c` utilities to assist publishing to both worlds - `Gemini` and `WWW` - from the command line, including a "Ci-like" script for sr.ht. 
 
 At it's core, there's a very simple `text/gemini` to `text/html` conversion tool, written in just about 108 lines of code, using C scripting with [Sugar-C](https://github.com/antonioprates/sugar) (tcc flavour).
 
@@ -39,7 +39,7 @@ cd sugar
 Then, just clone `this` repo:
 
 ```sh
-git clone https://github.com/antonioprates/gmi-to-html
+git clone https://github.com/antonioprates/gmi-to-html.git
 ```
 
 Now you should be good to go :)
