@@ -111,11 +111,11 @@ Recommended usage - provide path to `content folder` (without the final slash), 
 
 Then, you get a pure `HTML` clone under `./website` folder.
 
-> Note: it will overwrite whatever is in `./website folder.
+> Note: it will overwrite whatever is in `./website`folder.
 
 ### 3. Full-automatic (with SourceHut)
 
-Finally, there is a 'CI like' (lol) script to publish to `SourceHut Pages`. Follow [this link](gemini://srht.site/) for more information on how to get hosted on [sr.ht](https://sourcehut.org/).
+Finally, there is a 'CI like' (lol) script to publish to `SourceHut Pages`. Navigate to [gemini://srht.site](gemini://srht.site/) for the information on how to get hosted on [SourceHut](https://sourcehut.org/).
 
 > Configure: edit the `publish-to-srht.sh` to add your `token` and `send_url` configurations.
 
