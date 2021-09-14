@@ -5,11 +5,11 @@
 
 This is a framework to streamline the process of writing contents as a Gemini Capsule, while making it also available as a common website, for a broader audience.
 
-It's a combination of `bash/sugar-c` utilities to assist publishing to both worlds - Gemini and WWW - from the command line, including a "CI-like" script for sr.ht. 
+It's a combination of `bash/sugar-c` utilities to assist publishing to both worlds - Gemini and HTTP(S) - from the command line, including a "CI-like" script for sr.ht. 
 
 At it's core, there's a very simple `text/gemini` to `text/html` conversion tool, written in just about 108 lines of code, using C scripting with [Sugar-C](https://github.com/antonioprates/sugar) (tcc flavour).
 
-> `Sugar-C` compiles C code on the fly 'as if' a scripting language out of the box and leans on `<sugar.h>` library as only import for doing text file operations.
+> `Sugar-C` compiles C code on the fly 'as if' a scripting language out of the box and leans on `<sugar.h>` library as only import for doing text file procedures.
 
 See also:
 [solderpunk's gemini spec](./gemini_spec.txt), section 1.3.5 for `text/gemini` format reference.
