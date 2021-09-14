@@ -2,6 +2,7 @@ body {
   color: #c9d1d9;
   background-color: #0d1117;
   font-size: 14pt;
+  font-family: sans-serif;
   margin: 0;
   padding: 2vh;
 }
@@ -38,6 +39,7 @@ pre {
   color: #e5c07b;
   background-color: #161b22;
   padding: 1vw;
+  font-family: monospace;
 }
 
 #root {
@@ -46,7 +48,9 @@ pre {
 }
 
 #content {
-  width: 60vw;
+  min-width: 600px;
+  max-width: 900px;
+  width: 100%;
   display: inline-block;
 }
 
