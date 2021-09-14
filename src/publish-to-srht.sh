@@ -19,7 +19,7 @@ website="$PWD/website"
 [[ -z "$gmipath" ]] && echo "Please, provide path to content folder (without final slash), like:" \
 && echo "./gmi-to-html.sh ~/gemini" && exit 1
 
-echo "Clone converting GEMINI to HTML..."
+# clone converting capsule to website
 ./gmi-to-html.sh $gmipath
 
 echo "Compressing files to send:"

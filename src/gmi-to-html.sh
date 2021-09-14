@@ -35,7 +35,9 @@ function getFilePaths() {
 echo "Convering Gemini Capsule from '$gmipath' to './website':"
 
 # take a clean copy of gmi folder
-[[ -z "$website" ]] || rm -r $website
+if [[ -z "$website" ]]; then
+    rm -r $website
+fi
 cp -r $gmipath $website
 
 # copy/update favicon.ico and styles.css to root folder
