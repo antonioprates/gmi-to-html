@@ -1,6 +1,7 @@
-// gmi-to-html utility, using Sugar-C in about 130 lines of code
+// gmi-to-html utility, using Sugar-C in about 150 lines of code
 // 2021, by Antonio Prates <antonioprates at gmail dot com>
 
+#include <string.h>
 #include <sugar.h>
 
 string title;
@@ -56,6 +57,7 @@ string toLink(string line) {
 }
 
 string toHTML(string line) {
+  // **block modes**
   if (!quoteMode) {
     if (startsWith(line, "```")) {          // ``` -> preformatted text
       preformattedMode = !preformattedMode; // toggle global <pre> mode
@@ -80,14 +82,10 @@ string toHTML(string line) {
       line = replaceWord(line, "\n\n", "\n"); // hack/fix extra space :P
     }
   }
-  if (startsWith(line, "=&gt;"))              // => link (escaped)
-    return toLink(line);                      // -> <a href...
-  line = replaceWord(line, " `", " <code>");  // start inline code
-  line = replaceWord(line, "` ", "</code> "); // end inline code
-  line = replaceWord(line, " **", " <b>");    // start bold text
-  line = replaceWord(line, "** ", "</b> ");   // end bold text
-  if (startsWith(line, "* "))                 // * -> list item
-    return join3s("<li>", &line[2], "</li>");
+  // **links**
+  if (startsWith(line, "=&gt;")) // => link (escaped)
+    return toLink(line);         // -> <a href...
+  // **headings**
   if (startsWith(line, "### ")) // ### -> h3
     return join3s("<h3>", &line[4], "</h3>");
   if (startsWith(line, "## ")) // ## -> h2
@@ -96,7 +94,25 @@ string toHTML(string line) {
     title = join3s("<title>", &line[2], "</title>\n");
     return join3s("<h1>", &line[2], "</h1>");
   }
-  return line; // ...or else -> pure simple text
+  // **inline formatting**
+  line = replaceWord(line, " `", " <code>"); // start inline code
+  if (startsWith(line, "`"))
+    line = replaceWord(line, "`", "<code>");  // start inline code
+  line = replaceWord(line, "` ", "</code> "); // end inline code
+  number length = strlen(line);
+  if (length > 0 && line[length - 1] == '`')
+    line = replaceWord(line, "`", "</code>"); // end inline code
+  line = replaceWord(line, " **", " <b>");    // start bold text
+  if (startsWith(line, "**"))
+    line = replaceWord(line, "**", "<b>");  // start bold text
+  line = replaceWord(line, "** ", "</b> "); // end bold text
+  length = strlen(line);
+  if (length > 1 && line[length - 1] == '*' && line[length - 2] == '*')
+    line = replaceWord(line, "**", "</b>"); // end bold text
+  if (startsWith(line, "* "))               // * -> list item
+    return join3s("<li>", &line[2], "</li>");
+  // ...or else -> **just simple text**
+  return line;
 }
 
 void convert(string path) {
