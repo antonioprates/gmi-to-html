@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Converts Gemini Capsule folder to a HTML Website folder
-# 2021, by Antonio Prates <antonioprates@pm.me>
+# 2021, by Antonio Prates <antonioprates at gmail dot com>
 
 # Note: this script assumes you have Sugar C  in yor system
 # (see provided README.md for more information)

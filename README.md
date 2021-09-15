@@ -7,7 +7,7 @@ This is a framework to streamline the process of writing contents as a Gemini Ca
 
 It's a combination of `bash/sugar-c` utilities to assist publishing to both worlds - Gemini and HTTP(S) - from the command line, including a "CI-like" script for sr.ht. 
 
-At it's core, there's a very simple `text/gemini` to `text/html` conversion tool, written in just about 108 lines of code, using C scripting with [Sugar-C](https://github.com/antonioprates/sugar) (tcc flavour).
+At it's core, there's a very simple `text/gemini` to `text/html` conversion tool, written in just about 130 lines of code, using C scripting with [Sugar-C](https://github.com/antonioprates/sugar) (tcc flavour).
 
 > `Sugar-C` compiles C code on the fly 'as if' a scripting language out of the box and leans on `<sugar.h>` library as only import for doing text file procedures.
 
@@ -68,10 +68,12 @@ These are the markup conversions currently supported by `gmi-to-html.c` (the cor
 - `"`, `&`, `<`, `>`, html escaped codes
 - `=>` internal links, converts path to *.html
 - `=>` external links, keeps original URL
-- `#` heading 1, also sets the page title
-- `##` heading 2
-- `###` heading 3
-- `code` block enclosed in triple backtick (```)
+- `#` heading , also sets the page title
+- `##` sub-heading
+- `###` sub-sub-heading
+- `*` list item
+- `>` blockquotes!
+- `pre-formatted` block enclosed in triple backtick (```)
 - inline `code` enclosed in backtick (`)
 - inline `bold` words enclosed in asterisks (**)
 
@@ -125,7 +127,7 @@ Provide capsule folder (without the final slash), like:
 ./publish-to-srht.sh ~/gemini
 ```
 
-> Note: the bash scripts, internally call the C script with the list of files for you, so it assumes you have Sugar-C configured in your system.
+> Note: the bash scripts, internally calls the C script with the list of files for you, so it assumes you have Sugar-C configured in your system.
 
 ## License
 

@@ -1,10 +1,11 @@
-// gmi-to-html utility, using Sugar-C in about 108 lines of code
-// 2021, by Antonio Prates <antonioprates@pm.me>
+// gmi-to-html utility, using Sugar-C in about 130 lines of code
+// 2021, by Antonio Prates <antonioprates at gmail dot com>
 
 #include <sugar.h>
 
 string title;
 bool preformattedMode;
+bool quoteMode;
 number linkCount;
 
 stringList preProcess(string text) {
@@ -55,14 +56,31 @@ string toLink(string line) {
 }
 
 string toHTML(string line) {
-  if (startsWith(line, "```")) {          // ``` -> preformatted text
-    preformattedMode = !preformattedMode; // toggle global <pre> mode
-    line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
-                            : replaceWord(line, "```", "</pre>");
+  if (!quoteMode) {
+    if (startsWith(line, "```")) {          // ``` -> preformatted text
+      preformattedMode = !preformattedMode; // toggle global <pre> mode
+      line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
+                              : replaceWord(line, "```", "</pre>");
+    }
+    if (preformattedMode)            // while global <pre> mode
+      return line;                   // -> pure simple text
+    if (startsWith(line, "&gt; ")) { // > -> blockquote (escaped)
+      quoteMode = true;              // global quote mode on
+      line = replaceWord(line, "<br />", "");
+      return join2s(replaceWord(line, "&gt; ", "<blockquote>\n"), "<br />");
+    }
   }
-  if (preformattedMode)                       // while global <pre> mode
-    return line;                              // -> pure simple text
-  if (startsWith(line, "=&gt;"))              // => link (already escaped)
+  if (quoteMode) { // the previous !quoteMode logic, sucks... I know
+    line = replaceWord(line, "<br />", "");
+    if (startsWith(line, "&gt; ")) // while global quote mode
+      return join2s(replaceWord(line, "&gt; ", ""), "<br />");
+    else {
+      quoteMode = false;                      // global quote mode off
+      line = join2s("</blockquote>\n", line); // end blockquote
+      line = replaceWord(line, "\n\n", "\n"); // hack/fix extra space :P
+    }
+  }
+  if (startsWith(line, "=&gt;"))              // => link (escaped)
     return toLink(line);                      // -> <a href...
   line = replaceWord(line, " `", " <code>");  // start inline code
   line = replaceWord(line, "` ", "</code> "); // end inline code
@@ -87,6 +105,7 @@ void convert(string path) {
     if (text) {                    // safe-gard / read failure
       title = "untitled document"; // reset global 'page title' for each file
       preformattedMode = false;    // reset global '<pre> mode' for each file
+      quoteMode = false;           // reset global 'quote mode' for each file
       linkCount = 0;               // reset global 'link count' for each file
       stringList lines = preProcess(text);
       number lineCount = listCount(lines);
