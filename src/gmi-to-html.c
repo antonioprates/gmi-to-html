@@ -13,7 +13,6 @@ stringList preProcess(string text) {
   text = replaceWord(text, "&", "&amp;");   // html escape codes
   text = replaceWord(text, "<", "&lt;");    // html escape codes
   text = replaceWord(text, ">", "&gt;");    // html escape codes
-  text = replaceWord(text, "```\n", "```"); // hack/fix extra space :P
   text = replaceWord(text, "\n", "\n<br />\n");
   return splitSep(text, '\n'); // ...and split
 }
@@ -34,6 +33,7 @@ string postProcess(number lineCount, stringList lines) {
   body = replaceWord(body, "</h3>\n<br />\n<br />", "</h3>");
   body = replaceWord(body, "</h3>\n<br />", "</h3>");
   body = replaceWord(body, "</li>\n<br />", "</li>");
+  body = replaceWord(body, "</pre>\n<br />\n<br />", "</pre>");
   body = replaceWord(body, "</pre>\n<br />", "</pre>");
   body = replaceWord(body, "</blockquote>\n<br />", "</blockquote>");
   body = replaceWord(body, "<hr />\n<br />", "<hr />");
@@ -66,7 +66,7 @@ string toHTML(string line) {
   // **preformatted mode**
   if (startsWith(line, "```")) {          // ``` -> preformatted text
     preformattedMode = !preformattedMode; // toggle global <pre> mode
-    line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
+    line = preformattedMode ? replaceWord(line, "```", "<pre>")
                             : replaceWord(line, "```", "</pre>");
   }
   if (preformattedMode)                     // while global <pre> mode
