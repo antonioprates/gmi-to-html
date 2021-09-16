@@ -6,7 +6,6 @@
 
 string title;
 bool preformattedMode;
-bool quoteMode;
 number linkCount;
 
 stringList preProcess(string text) {
@@ -17,8 +16,8 @@ stringList preProcess(string text) {
   text = replaceWord(text, ">", "&gt;");    // html escape codes
   text = replaceWord(text, "\n##", "##");   // hack/fix extra space :P
   text = replaceWord(text, "```\n", "```"); // hack/fix extra space :P
-  text = replaceWord(text, "\n\n", "\n<br />\n<br />\n"); // break lines
-  return splitSep(text, '\n');                            // ...and split
+  text = replaceWord(text, "\n", "\n<br />\n");
+  return splitSep(text, '\n'); // ...and split
 }
 
 string postProcess(number lineCount, stringList lines) {
@@ -28,10 +27,18 @@ string postProcess(number lineCount, stringList lines) {
              "<link rel='icon' href='favicon.ico' type='image/x-icon' />\n",
              title, "</head>\n<body>\n<div id='root'>\n<div id='content'>\n");
   string body = joinSep(lineCount, lines, '\n'); // join lines alltogether..
-  body = replaceWord(body, "</h1>\n<br />\n<br />", "</h1>"); // hack/fix :P
-  body = replaceWord(body, "</h2>\n<br />\n<br />", "</h2>"); // hack/fix :P
-  body = replaceWord(body, "</h3>\n<br />\n<br />", "</h3>"); // hack/fix :P
-  body = replaceWord(body, "</li>\n<br />", "</li>");         // hack/fix :P
+  // hacks and fixes for spacing issues, might create their own issues :P
+  body = replaceWord(body, "\n\n", "\n");
+  body = replaceWord(body, "</h1>\n<br />\n<br />", "</h1>");
+  body = replaceWord(body, "</h1>\n<br />", "</h1>");
+  body = replaceWord(body, "</h2>\n<br />\n<br />", "</h2>");
+  body = replaceWord(body, "</h2>\n<br />", "</h2>");
+  body = replaceWord(body, "</h3>\n<br />\n<br />", "</h3>");
+  body = replaceWord(body, "</h3>\n<br />", "</h3>");
+  body = replaceWord(body, "</li>\n<br />", "</li>");
+  body = replaceWord(body, "</pre>\n<br />", "</pre>");
+  body = replaceWord(body, "</blockquote>\n<br />", "</blockquote>");
+  // ...end of spacing hacks and fixes
   string ending = "\n<br />\n<br />\n</div>\n</div>\n</body>\n</html>\n";
   return replaceWord(join3s(head, body, ending), "\n", "\r\n"); // add \r :)
 }
@@ -57,30 +64,18 @@ string toLink(string line) {
 }
 
 string toHTML(string line) {
-  // **block modes**
-  if (!quoteMode) {
-    if (startsWith(line, "```")) {          // ``` -> preformatted text
-      preformattedMode = !preformattedMode; // toggle global <pre> mode
-      line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
-                              : replaceWord(line, "```", "</pre>");
-    }
-    if (preformattedMode)            // while global <pre> mode
-      return line;                   // -> pure simple text
-    if (startsWith(line, "&gt; ")) { // > -> blockquote (escaped)
-      quoteMode = true;              // global quote mode on
-      line = replaceWord(line, "<br />", "");
-      return join2s(replaceWord(line, "&gt; ", "<blockquote>\n"), "<br />");
-    }
+  // **preformatted mode**
+  if (startsWith(line, "```")) {          // ``` -> preformatted text
+    preformattedMode = !preformattedMode; // toggle global <pre> mode
+    line = preformattedMode ? replaceWord(line, "```", "<pre>\n")
+                            : replaceWord(line, "```", "</pre>");
   }
-  if (quoteMode) { // the previous !quoteMode logic, sucks... I know
-    line = replaceWord(line, "<br />", "");
-    if (startsWith(line, "&gt; ")) // while global quote mode
-      return join2s(replaceWord(line, "&gt; ", ""), "<br />");
-    else {
-      quoteMode = false;                      // global quote mode off
-      line = join2s("</blockquote>\n", line); // end blockquote
-      line = replaceWord(line, "\n\n", "\n"); // hack/fix extra space :P
-    }
+  if (preformattedMode)                     // while global <pre> mode
+    return replaceWord(line, "<br />", ""); // -> revert preProcess
+  // **simple blockquote**
+  if (startsWith(line, "&gt; ")) {          // > -> blockquote (escaped)
+    line = replaceWord(line, "<br />", ""); // -> revert preProcess
+    return join3s("<blockquote>", &line[5], "</blockquote>\n");
   }
   // **links**
   if (startsWith(line, "=&gt;")) // => link (escaped)
@@ -94,35 +89,41 @@ string toHTML(string line) {
     title = join3s("<title>", &line[2], "</title>\n");
     return join3s("<h1>", &line[2], "</h1>");
   }
-  // **inline formatting**
-  line = replaceWord(line, " `", " <code>"); // start inline code
-  if (startsWith(line, "`"))
-    line = replaceWord(line, "`", "<code>");  // start inline code
-  line = replaceWord(line, "` ", "</code> "); // end inline code
-  number length = strlen(line);
-  if (length > 0 && line[length - 1] == '`')
-    line = replaceWord(line, "`", "</code>"); // end inline code
-  line = replaceWord(line, " **", " <b>");    // start bold text
-  if (startsWith(line, "**"))
-    line = replaceWord(line, "**", "<b>");  // start bold text
-  line = replaceWord(line, "** ", "</b> "); // end bold text
-  length = strlen(line);
-  if (length > 1 && line[length - 1] == '*' && line[length - 2] == '*')
-    line = replaceWord(line, "**", "</b>"); // end bold text
-  if (startsWith(line, "* "))               // * -> list item
-    return join3s("<li>", &line[2], "</li>");
+  // **list items**
+  if (startsWith(line, "* "))                 // * -> list item
+    return join3s("<li>", &line[2], "</li>"); // end inline bold text
+  // **inline code**
+  number length;
+  if (countWord(line, "`") > 1) {               // simple check, no guarantee
+    line = replaceWord(line, " `", " <code>");  // start inline code
+    line = replaceWord(line, "` ", "</code> "); // end inline code
+    if (startsWith(line, "`"))                  // if first thin in the line
+      line = join2s("<code>", &line[1]);        // begin with inline code
+    length = strlen(line);
+    if (length > 0 && line[length - 1] == '`')  // if last...
+      line = replaceWord(line, "`", "</code>"); // end inline code
+  }
+  // **inline bold**
+  if (countWord(line, "*") > 3) {             // simple check, no guarantee
+    line = replaceWord(line, " **", " <b>");  // start inline bold text
+    line = replaceWord(line, "** ", "</b> "); // end inline bold text
+    if (startsWith(line, "**"))               // if first thin in the line
+      line = join2s("<b>", &line[2]);         // being with inline code
+    length = strlen(line);                    // ... if last...
+    if (length > 1 && line[length - 1] == '*' && line[length - 2] == '*')
+      line = replaceWord(line, "**", "</b>"); // end bold text
+  }
   // ...or else -> **just simple text**
   return line;
 }
 
 void convert(string path) {
-  if (countWord(path, ".gmi")) {   // simple path validadion
-    string text = readFile(path);  // read and hope content is a text file
-    if (text) {                    // safe-gard / read failure
-      title = "untitled document"; // reset global 'page title' for each file
-      preformattedMode = false;    // reset global '<pre> mode' for each file
-      quoteMode = false;           // reset global 'quote mode' for each file
-      linkCount = 0;               // reset global 'link count' for each file
+  if (countWord(path, ".gmi")) {    // ultra-simple path validadion
+    string text = readFile(path);   // read and hope content is text/gemini :D
+    if (text) {                     // safe-gard / read failure
+      title = "<title>#</title>\n"; // reset global 'page title' for each file
+      preformattedMode = false;     // reset global '<pre> mode' for each file
+      linkCount = 0;                // reset global 'link count' for each file
       stringList lines = preProcess(text);
       number lineCount = listCount(lines);
       for (number i = 0; i < lineCount; i++)
