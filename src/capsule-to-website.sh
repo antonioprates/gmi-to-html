@@ -51,4 +51,4 @@ getFilePaths $website
 sugar gmi-to-html.c $filePaths
 
 # clean up
-rm -r $website/*.gmi
+rm $filePaths
