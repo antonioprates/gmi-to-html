@@ -8,12 +8,12 @@
 
 # get path to content folder as first argument
 gmipath=$1
-website=$PWD/website
+website=$PWD/website # if you change here also change publish-to-srht.sh
 filePaths=""
 
 # prevent running the script with no defined path
 [[ -z $gmipath ]] && echo "Please, provide path to content folder (without final slash), like:" \
-&& echo "./gmi-to-html.sh ~/gemini" && exit 1
+&& echo "./capsule-to-website.sh ~/gemini" && exit 1
 
 function getFilePaths() {
     for item in $1/*; do

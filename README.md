@@ -78,7 +78,17 @@ These are the markup conversions currently supported by `gmi-to-html.c` (the cor
 - inline `code` enclosed in backtick (`)
 - inline `bold` words enclosed in asterisks (**)
 
+### Limitations
+
+Inline formatting of `code` and `bold` expects a blank space before the opening markup and a blank space after the closing markup.
+
+You can't pre-pend or append those immediately with punctuation `.,:;!?`. When writing your markdown you can overcome this limitation by adding an extra blank space.
+
 ## Conveniences
+
+### Append footer
+
+You can add `text/gemini` markdown contents to `src/template/footer.gmi` and all your pages will be automatically appended when using full-automatic publish script. Or check on `src/append-footer.sh` for manual usage
 
 ### Theming
 

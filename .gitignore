@@ -1,2 +1,5 @@
 src/publish.sh
 src/website/*
+src/capsule/*
+src/template/*.gmi
+!src/template/footer.gmi
