@@ -13,7 +13,6 @@ stringList preProcess(string text) {
   text = replaceWord(text, "&", "&amp;");   // html escape codes
   text = replaceWord(text, "<", "&lt;");    // html escape codes
   text = replaceWord(text, ">", "&gt;");    // html escape codes
-  text = replaceWord(text, "\n##", "##");   // hack/fix extra space :P
   text = replaceWord(text, "```\n", "```"); // hack/fix extra space :P
   text = replaceWord(text, "\n", "\n<br />\n");
   return splitSep(text, '\n'); // ...and split
