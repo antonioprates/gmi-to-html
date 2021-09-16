@@ -59,6 +59,13 @@ code {
   font-family: monospace;
 }
 
+hr {
+  border-top-color: #707586;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+}
+
 #root {
   display: flex;
   justify-content: center;

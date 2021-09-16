@@ -72,7 +72,8 @@ These are the markup conversions currently supported by `gmi-to-html.c` (the cor
 - `##` sub-heading
 - `###` sub-sub-heading
 - `*` list item
-- `>` blockquotes!
+- `>` blockquote
+- `---` horizontal rule
 - `pre-formatted` block enclosed in triple backtick (```)
 - inline `code` enclosed in backtick (`)
 - inline `bold` words enclosed in asterisks (**)

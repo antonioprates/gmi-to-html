@@ -38,6 +38,7 @@ string postProcess(number lineCount, stringList lines) {
   body = replaceWord(body, "</li>\n<br />", "</li>");
   body = replaceWord(body, "</pre>\n<br />", "</pre>");
   body = replaceWord(body, "</blockquote>\n<br />", "</blockquote>");
+  body = replaceWord(body, "<hr />\n<br />", "<hr />");
   // ...end of spacing hacks and fixes
   string ending = "\n<br />\n<br />\n</div>\n</div>\n</body>\n</html>\n";
   return replaceWord(join3s(head, body, ending), "\n", "\r\n"); // add \r :)
@@ -92,6 +93,9 @@ string toHTML(string line) {
   // **list items**
   if (startsWith(line, "* "))                 // * -> list item
     return join3s("<li>", &line[2], "</li>"); // end inline bold text
+  // **horizontal-rule**
+  if (areSame(line, "---"))
+    return "<hr />";
   // **inline code**
   number length;
   if (countWord(line, "`") > 1) {               // simple check, no guarantee
