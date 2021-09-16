@@ -65,7 +65,7 @@ Copy the binary into `src` folder and update `capsule-to-website.sh` to use the 
 ### Format conversion
 
 These are the markup conversions currently supported by `gmi-to-html.c` (the core tool):
-- `"`, `&`, `<`, `>`, html escaped codes
+- `&`, `<`, `>`, html escaped codes
 - `=>` internal links, converts path to *.html
 - `=>` external links, keeps original URL
 - `#` heading , also sets the page title

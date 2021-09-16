@@ -10,7 +10,6 @@ number linkCount;
 
 stringList preProcess(string text) {
   text = replaceWord(text, "\r", "");       // remove \r
-  text = replaceWord(text, "\"", "&quot;"); // html escape codes
   text = replaceWord(text, "&", "&amp;");   // html escape codes
   text = replaceWord(text, "<", "&lt;");    // html escape codes
   text = replaceWord(text, ">", "&gt;");    // html escape codes
