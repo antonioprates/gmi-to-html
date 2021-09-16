@@ -88,9 +88,6 @@ string toHTML(string line) {
     title = join3s("<title>", &line[2], "</title>\n");
     return join3s("<h1>", &line[2], "</h1>");
   }
-  // **list items**
-  if (startsWith(line, "* "))                 // * -> list item
-    return join3s("<li>", &line[2], "</li>"); // end inline bold text
   // **horizontal-rule**
   if (areSame(line, "---"))
     return "<hr />";
@@ -115,6 +112,9 @@ string toHTML(string line) {
     if (length > 1 && line[length - 1] == '*' && line[length - 2] == '*')
       line = replaceWord(line, "**", "</b>"); // end bold text
   }
+  // **list items**
+  if (startsWith(line, "* "))                 // * -> list item
+    return join3s("<li>", &line[2], "</li>"); // end inline bold text
   // ...or else -> **just simple text**
   return line;
 }
