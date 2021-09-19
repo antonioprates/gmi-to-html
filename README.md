@@ -1,5 +1,8 @@
 # Gemini GMI to HTML
 
+IMPORTANT NOTE: the development of this tool evolved to `GemPress` and moved to sr.ht. Find fresh sources at:
+[git.sr.ht/~aprates/gempress](https://git.sr.ht/~aprates/gempress)
+
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme) 
 [![license MIT](https://img.shields.io/badge/license-MIT-yellow.svg?style=flat-square)](LICENSE.md)
 
